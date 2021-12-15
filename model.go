@@ -26,6 +26,7 @@ type DetailTransactions struct {
 	Qty           int       `db:"qty"`
 	Purchase_date time.Time `db:"purchase_date"`
 	Customer_id   string    `db:"customer_id"`
+	Amount        int       `db:"amount"`
 }
 
 type Transactions struct {

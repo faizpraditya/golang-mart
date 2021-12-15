@@ -29,10 +29,14 @@ func MainMenu(db *sqlx.DB) {
 func mainMenuController(menu int, db *sqlx.DB) {
 	switch menu {
 	case 1:
-		productMenu(db)
+		defer productMenu(db)
+		return
 	case 2:
-		transactionMenu(db)
+		defer transactionMenu(db)
+		return
 	case 3:
+		defer reportMenu(db)
+		return
 	case 4:
 		fmt.Println("Exit from program")
 		os.Exit(1)
@@ -137,6 +141,32 @@ func transactionMenuController(menu int, db *sqlx.DB) {
 		DetailTransaction(db, scanner.Text())
 		return
 	case 3:
+		defer MainMenu(db)
+		return
+	default:
+		defer productMenu(db)
+		fmt.Println("Wrong input")
+		return
+	}
+}
+
+func reportMenu(db *sqlx.DB) {
+	fmt.Println("LAPORAN PENJUALAN")
+	fmt.Println("1. Semua laporan")
+	fmt.Println("2. Kembali ke menu utama")
+	fmt.Print("Pilih Menu: ")
+	scanner.Scan()
+	menuReport, _ := strconv.Atoi(scanner.Text())
+	reportMenuController(menuReport, db)
+}
+
+func reportMenuController(menu int, db *sqlx.DB) {
+	switch menu {
+	case 1:
+		defer MainMenu(db)
+		SalesReport(db)
+		return
+	case 2:
 		defer MainMenu(db)
 		return
 	default:
@@ -252,6 +282,29 @@ func DetailTransaction(db *sqlx.DB, id string) {
 	}
 
 	log.Println(transaction)
+}
+
+func SalesReport(db *sqlx.DB) {
+	transactions := []DetailTransactions{}
+	err := db.Select(&transactions, SALES_REPORT)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(transactions)
+	log.Println("Total Omzet: ", TotalOmzet(db))
+}
+
+func TotalOmzet(db *sqlx.DB) int {
+	omzet := DetailTransactions{}
+	err := db.Get(&omzet, TOTAL_OMZET)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return omzet.Amount
 }
 
 func check_error(err error, s string) {

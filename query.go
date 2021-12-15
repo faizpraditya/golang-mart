@@ -29,4 +29,14 @@ const (
 	JOIN purchase pur
 	ON pd.purchase_id = pur.id
 	WHERE pd.id = $1`
+
+	SALES_REPORT = `SELECT pd.*, pur.customer_id, pur.purchase_date, (pd.qty*pd.price) as amount
+	FROM purchase_detail pd
+	JOIN purchase pur
+	ON pd.purchase_id = pur.id`
+
+	TOTAL_OMZET = `SELECT SUM(pd.qty*pd.price) AS amount
+	FROM purchase_detail pd
+	JOIN purchase pur
+	ON pd.purchase_id = pur.id`
 )
