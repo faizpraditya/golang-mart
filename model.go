@@ -19,11 +19,13 @@ type Products struct {
 }
 
 type DetailTransactions struct {
-	Id          string `db:"id"`
-	Purchase_id string `db:"purchase_id"`
-	Product_id  string `db:"product_id"`
-	Price       int    `db:"price"`
-	Qty         int    `db:"qty"`
+	Id            string    `db:"id"`
+	Purchase_id   string    `db:"purchase_id"`
+	Product_id    string    `db:"product_id"`
+	Price         int       `db:"price"`
+	Qty           int       `db:"qty"`
+	Purchase_date time.Time `db:"purchase_date"`
+	Customer_id   string    `db:"customer_id"`
 }
 
 type Transactions struct {

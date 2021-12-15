@@ -113,7 +113,7 @@ func transactionMenuController(menu int, db *sqlx.DB) {
 	switch menu {
 	case 1:
 		defer MainMenu(db)
-		fmt.Println("TAMBAH PRODUK")
+		fmt.Println("TAMBAH TRANSAKSI PENJUALAN")
 		fmt.Print("Id transaksi: ")
 		scanner.Scan()
 		inTId := scanner.Text()
@@ -130,6 +130,12 @@ func transactionMenuController(menu int, db *sqlx.DB) {
 		// AddTransaction(db, inTId, inCId)
 		return
 	case 2:
+		defer MainMenu(db)
+		fmt.Println("DETAIL TRANSAKSI PENJUALAN")
+		fmt.Print("Id transaksi: ")
+		scanner.Scan()
+		DetailTransaction(db, scanner.Text())
+		return
 	case 3:
 		defer MainMenu(db)
 		return
@@ -237,7 +243,16 @@ func AddTransaction(db *sqlx.DB, id string, customer_id string) {
 	}
 }
 
-func DetailTransaction() {}
+func DetailTransaction(db *sqlx.DB, id string) {
+	transaction := DetailTransactions{}
+	err := db.Get(&transaction, GET_DETAIL_TRANSACTION, id)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(transaction)
+}
 
 func check_error(err error, s string) {
 	if err != nil {

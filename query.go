@@ -23,4 +23,10 @@ const (
 	UPDATE_STOCK_DECREASE = `UPDATE m_product
 	SET stock = (stock - :qty)
 	WHERE id = :id`
+
+	GET_DETAIL_TRANSACTION = `SELECT pd.*, pur.customer_id, pur.purchase_date
+	FROM purchase_detail pd
+	JOIN purchase pur
+	ON pd.purchase_id = pur.id
+	WHERE pd.id = $1`
 )
