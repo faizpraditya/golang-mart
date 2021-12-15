@@ -8,5 +8,19 @@ const (
 
 	UPDATE_STATUS = `UPDATE m_product SET status= :status WHERE id = :id`
 
-	DETAIL_PRODUCT = `SELECT * FROM m_product WHERE status=1`
+	GET_PRODUCT = `SELECT * FROM m_product WHERE id = $1`
+
+	INSERT_DETAIL_TRANSACTION = `INSERT INTO purchase_detail
+	(id, purchase_id, product_id, price, qty)
+	VALUES
+	(:id, :purchase_id, :product_id, :price, :qty)`
+
+	INSERT_TRANSACTION = `INSERT INTO purchase
+	(id, customer_id, purchase_date)
+	VALUES
+	(:id, :customer_id, CURRENT_TIMESTAMP)`
+
+	UPDATE_STOCK_DECREASE = `UPDATE m_product
+	SET stock = (stock - :qty)
+	WHERE id = :id`
 )
