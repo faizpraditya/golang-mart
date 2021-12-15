@@ -2,16 +2,21 @@ package main
 
 import (
 	"bufio"
+	"database/sql"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
+
+	_ "github.com/jackc/pgx/stdlib"
+	"github.com/jmoiron/sqlx"
 )
 
 var scanner = bufio.NewScanner(os.Stdin)
 
 func mainMenu() {
 	fmt.Println("ENIGMA-MART")
-	fmt.Println("1. Produkt Barang")
+	fmt.Println("1. Produk Barang")
 	fmt.Println("2. Transaksi Penjualan")
 	fmt.Println("3. Laporan Penjualan")
 	fmt.Println("4. Exit")
@@ -33,5 +38,29 @@ func menuController(menu int) {
 		defer mainMenu()
 		fmt.Println("Wrong input")
 		return
+	}
+}
+
+func AddProduct(db *sqlx.DB, id string) {
+
+}
+
+func DeleteProduct(db *sqlx.DB, id string) {
+	product := Products{Id: id, Status: 0}
+	_, err := db.NamedExec(UPDATE_STATUS, product)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			log.Fatal("Id doesn't exist")
+		}
+	} else {
+		check_error(err, "delete")
+	}
+}
+
+func check_error(err error, s string) {
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		log.Println("Successfully " + s + " to database")
 	}
 }

@@ -1,5 +1,7 @@
 package main
 
 func main() {
-	mainMenu()
+	db := connectDB()
+	// mainMenu()
+	DeleteProduct(db, "p002")
 }
